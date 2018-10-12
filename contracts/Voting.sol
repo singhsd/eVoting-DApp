@@ -12,7 +12,7 @@ contract Voting {
     /// array of candidates
     Candidate[] candidates;
     /// mapping of voter to has_voted
-    mapping(string => uint) voter;
+    mapping(address => uint) voter;
     /// mapping of candidate to number_of_votes
     mapping(string => uint) votes;
     
@@ -38,24 +38,38 @@ contract Voting {
         status = 1;
     }
     
-    function register_voter(string name) public returns (uint status) {
+    function register_voter() public returns (uint status) {
         // check phase and return 0 if out of phase
         // also check if already exists
-        voter[name] = 0;
+        voter[msg.sender] = 0;
         status = 1;
     }
     
-    function vote(string voter_name, string candidate_name) public returns (uint status) {
+    function vote(string candidate_name) public returns (uint status) {
         // check phase and return 0 if out of phase
         // also check if already voted
-        voter[voter_name] = 1;
+        voter[msg.sender] = 1;
         votes[candidate_name]++;
         status = 1;
     }
     
-    function get_results() public returns (string winner) {
+    function get_results() public returns (string) {
         // check phase and return winner = "out of phase" if out of phase
-        uint max_votes = 0;
-        
+       uint max_votes = 0;
+       string memory winner = "None";
+       uint n = candidates.length;
+       for( uint i=0; i<n; i++)
+       {
+           if(max_votes < votes[candidates[i].name])
+           {
+               max_votes = votes[candidates[i].name];
+               winner = candidates[i].name;
+           }
+           else if (max_votes == votes[candidates[i].name])
+           {
+               winner = "No definite winner";
+           }
+       }
+       return winner;
     }
 }
