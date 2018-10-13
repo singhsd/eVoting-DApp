@@ -1,9 +1,11 @@
 pragma solidity ^0.4.0;
 /*
 use asserts for over or underflow checks
-use modifiers for phase checks
-check all conditions
 use events, if necessary
+Questions:
+1. can unregistered voters see results?
+2. can registered candidates vote?
+3. what to do if votes are tied?
 */
 contract Voting {
     /// candidate structure
@@ -32,10 +34,24 @@ contract Voting {
     constructor () public {
         starting_phase = now;
         num_candidates = 0;
-        candidate_registration_phase = 5 * 60; // 5 minutes * 60 seconds per minute
-        voter_registration_phase = 5 * 60; // 5 minutes * 60 seconds per minute
-        voting_phase = 5 * 60; // 5 minutes * 60 seconds per minute
-        result_declaration_phase = 5 * 60; // 5 minutes * 60 seconds per minute
+        candidate_registration_phase = 2 * 60; // 5 minutes * 60 seconds per minute
+        voter_registration_phase = 2 * 60; // 5 minutes * 60 seconds per minute
+        voting_phase = 2 * 60; // 5 minutes * 60 seconds per minute
+        result_declaration_phase = 2 * 60; // 5 minutes * 60 seconds per minute
+        
+        /*
+        INITIALIZATION INSTRUCTIONS:
+        ->  every candidate registered will have initial votes = 1
+            so that unregistered candidates will have initial votes = 0,
+            easy to differentiate
+            This is applicable to all candidates, and since all have same starting
+            point, the relative count of votes is unchanged
+        
+        ->  every registered voter will have vote = 1
+            so that unregistered candidates will have vote = 0,
+            and after voting, vote = 2,
+            easy to differentiate
+        */
     }
     
     // modifiers
@@ -97,6 +113,8 @@ contract Voting {
         return candidates[id].name;
     }
     
+    // State Changing Functions
+    
     function register_candidate(string name) 
         public 
         candidate_registration()
@@ -105,13 +123,17 @@ contract Voting {
             0, if unsuccessful
             1, otherwise
             */
-        // check phase and return 0 if out of phase
-        // also check if already exists
-        Candidate memory newCandidate = Candidate(name); // ...name,0);
-        candidates.push(newCandidate);
-        votes[name] = 0;
-        status = 1;
-        num_candidates++;
+        // check if already exists, should change to require?
+        if(votes[name] > 0) {
+            status = 0;
+        }
+        else {
+            Candidate memory newCandidate = Candidate(name); // ...name,0);
+            candidates.push(newCandidate);
+            votes[name] = 1;
+            num_candidates++;
+            status = 1;
+        }
     }
     
     function register_voter() 
@@ -122,10 +144,14 @@ contract Voting {
             0, if unsuccessful
             1, otherwise
             */
-        // check phase and return 0 if out of phase
-        // also check if already exists
-        voter[msg.sender] = 0;
-        status = 1;
+        // check if already exists, should change to require?
+        if(voter[msg.sender] > 0) {
+            status = 0;
+        }
+        else {
+            voter[msg.sender] = 1;
+            status = 1;
+        }
     }
     
     function vote(string candidate_name) 
@@ -136,12 +162,15 @@ contract Voting {
             0, if unsuccessful
             1, otherwise
             */
-        // check phase and return 0 if out of phase
-        // also check if already voted
-        // also check for valid voter, valid candidate
-        voter[msg.sender] = 1;
-        votes[candidate_name]++;
-        status = 1;
+        if(votes[candidate_name] < 1 || voter[msg.sender] != 1)
+        {
+            status = 0;
+        }
+        else {
+            voter[msg.sender] = 2;
+            votes[candidate_name]++;
+            status = 1;
+        }
     }
     
     function get_results() 
