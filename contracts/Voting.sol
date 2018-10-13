@@ -7,7 +7,6 @@ contract Voting {
         string name;
         // uint votes;
     }
-    
         
     /// array of candidates
     Candidate[] candidates;
@@ -15,6 +14,8 @@ contract Voting {
     mapping(address => uint) voter;
     /// mapping of candidate to number_of_votes
     mapping(string => uint) votes;
+    /// number of candidates
+    uint num_candidates;
     
     /// time and phase constants
     uint phase;
@@ -25,8 +26,20 @@ contract Voting {
     
     constructor () public {
         phase = now;
+        num_candidates = 0;
         // define other phase constants here as seconds from epoch time,
         // but relative
+    }
+    
+    // Getter functions
+    
+    function get_candidate_number() public constant returns (uint) {
+        return num_candidates;
+    }
+    
+    function get_candidate_info(uint id) public constant returns (string) {
+        // can be modified later to give out more details
+        return candidates[id].name;
     }
     
     function register_candidate(string name) public returns (uint status) {
@@ -36,6 +49,7 @@ contract Voting {
         candidates.push(newCandidate);
         votes[name] = 0;
         status = 1;
+        num_candidates++;
     }
     
     function register_voter() public returns (uint status) {
@@ -48,12 +62,13 @@ contract Voting {
     function vote(string candidate_name) public returns (uint status) {
         // check phase and return 0 if out of phase
         // also check if already voted
+        // also check for valid voter, valid candidate
         voter[msg.sender] = 1;
         votes[candidate_name]++;
         status = 1;
     }
     
-    function get_results() public returns (string) {
+    function get_results() public constant returns (string) {
         // check phase and return winner = "out of phase" if out of phase
        uint max_votes = 0;
        string memory winner = "None";
