@@ -6,6 +6,7 @@ Questions:
 1. can unregistered voters see results?
 2. can registered candidates vote?
 3. what to do if votes are tied?
+4. should show number of votes of all candidates, or just show winner?
 */
 contract Voting {
     /// candidate structure
