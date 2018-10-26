@@ -6,7 +6,6 @@ Questions:
 1. can unregistered voters see results?
 2. can registered candidates vote?
 3. what to do if votes are tied?
-4. should show number of votes of all candidates, or just show winner, and point 3?
 */
 contract Voting {
     /// candidate structure
@@ -101,14 +100,14 @@ contract Voting {
     
     function get_candidate_number() 
         public 
-        constant 
+        view 
         returns (uint) {
         return num_candidates;
     }
     
     function get_candidate_info(uint id) 
         public 
-        constant 
+        view 
         returns (string) {
         // can be modified later to give out more details
         return candidates[id].name;
@@ -135,6 +134,7 @@ contract Voting {
             num_candidates++;
             status = 1;
         }
+        status = num_candidates-1;
     }
     
     function register_voter() 
@@ -176,7 +176,7 @@ contract Voting {
     
     function get_results() 
         public 
-        constant 
+        view
         result_declaration()
         returns (string) {
        uint max_votes = 0;
