@@ -26,6 +26,7 @@
 	<h3 class="list_of_candidates"> List Of Candidates </h3>
 	</br>
 	<div id="candidate-box"></div>
+	<button class="vote">Vote</button>
 	</div>
 
 	<div class="second_segment">
@@ -34,18 +35,16 @@
 	<input type="text" class="form-control1" id="id-input" placeholder="Enter ID">
 	<button class="register_candidate" onClick="App.registerCandidate()"> Register Candidate </button>
 	</br>	</br>
-	<button class="register_voter">Register as Voter</button>
+	<button class="register_voter" onClick=App.registerVoter()">Register as Voter</button>
 	</div>
 
 	<div class="third_segment">
 	<h3 class="vote_result">Participate</h3>
-
-	<input type="text" class="form-control2" id="vote-input" placeholder="Enter ID">
-	<button class="vote">Vote</button>
-	</br>	</br>
-	<button class="result">Fetch Results</button>
+	<button class="result" onClick="App.findNumOfVotes()">Fetch Results</button>
+	<div class="vote-box"></div>
 	</div>
-
+	
+	<div class="msg"></div>
 	</div>
 
       
