@@ -1,0 +1,20 @@
+.first_segment {
+	position: absolute;
+}
+
+.second_segment {
+	position: absolute;
+	margin-left: 33%;
+	width: 33%;
+	border-left: solid #000000;
+	padding: 5px;
+	border-right: solid #000000;
+}
+
+
+.third_segment {
+	position: absolute;
+	margin-left: 67%;
+	padding: 5px;
+
+}

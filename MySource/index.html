@@ -5,10 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Let's Vote</title>
+    <title>Ethereum Voting Dapp</title>
 
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+
+<link rel="stylesheet" type="text/css" href="css/mystyle.css">
     
   </head>
   <body>
@@ -20,46 +21,34 @@
           <br/>
         </div>
       </div>
-      <div class="row">
-        <div class="phase">
-          <p>Phase - </p>
-	   </div>
-	</div>
-	<div class="row">
-		<div class="candidates">
-			<h3>Choose Candidate</h3>
-				<div class="list-candidates"></div>
-			</br>
-		</div>
-	</div>
-	<pre><b>or</b></pre>
-	<div class="row">
-		<nobr>
-		<div class="register-candidate">
-            <input type="text" class="form-control" id="id-input" placeholder="Enter ID">
-			<button class="register-candidate" onclick="App.registerCandidate">Register Candidate</button>
-		</div>
-		</nobr>
-	</div>
-	</br>
-	<pre><b>or</b></pre>
-	</br>
-	<div class="row">
-		<div class="register-voter">
-			<button class="register-voter" onclick="App.registerVoter">Register Yourself As Voter</button>
-		</div>
-	</div>
-	</br>
-	<pre><b>or</b></pre>
-	</br>
-	<div class="row">
-		<div class="results">
-			<button class="get-results" onclick="App.getResults">Get Results</button>
-		</div>
-	</div>
-</div>
 
+	<div class="first_segment">
+	<h3 class="list_of_candidates"> List Of Candidates </h3>
+	</br>
+	<div id="candidate-box"></div>
+	</div>
 
+	<div class="second_segment">
+	<h3 class="registration">Register</h3>
+
+	<input type="text" class="form-control1" id="id-input" placeholder="Enter ID">
+	<button class="register_candidate" onClick="App.registerCandidate()"> Register Candidate </button>
+	</br>	</br>
+	<button class="register_voter">Register as Voter</button>
+	</div>
+
+	<div class="third_segment">
+	<h3 class="vote_result">Participate</h3>
+
+	<input type="text" class="form-control2" id="vote-input" placeholder="Enter ID">
+	<button class="vote">Vote</button>
+	</br>	</br>
+	<button class="result">Fetch Results</button>
+	</div>
+
+	</div>
+
+      
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
