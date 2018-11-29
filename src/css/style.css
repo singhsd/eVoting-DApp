@@ -4,3 +4,6 @@
 #vote-box {
     margin-top: 20px;
 }
+#msg {
+    border: 2px solid black;
+}

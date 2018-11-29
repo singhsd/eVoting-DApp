@@ -8,8 +8,7 @@
     <title>Ethereum Voting Dapp</title>
 
     <!-- Bootstrap -->
-
-<link rel="stylesheet" type="text/css" href="css/mystyle.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
     
   </head>
   <body>
@@ -21,33 +20,30 @@
           <br/>
         </div>
       </div>
+      <div class="row">
+        <div class="col-md-4">
+          <p>Register a Candidate</p>
+          <div>
+            <input type="text" class="form-control2" id="id-input2" placeholder="Enter name">
+            <button class="btn btn-primary" onclick="App.registerCandidate()">Register</button>
+            </br></br></br>
+          </div>
+          <p>Select Candidate to Vote</p>
+          <div class="input-group mb-3">
+            
+            <input type="text" class="form-control" id="id-input" placeholder="Enter ID">
+          </div>
+          <div id="candidate-box"></div>
+          <button class="btn btn-primary" onclick="App.vote()">Vote</button>
+          <div id="msg"></div>
+        </div>
+        <div class="col-md-6">
+            <button class="btn btn-primary" onclick="App.findNumOfVotes()">Count Votes</button>
+            <div id="vote-box"></div>
+        </div>
+      </div>
+    </div>
 
-	<div class="first_segment">
-	<h3 class="list_of_candidates"> List Of Candidates </h3>
-	</br>
-	<div id="candidate-box"></div>
-	<button class="vote">Vote</button>
-	</div>
-
-	<div class="second_segment">
-	<h3 class="registration">Register</h3>
-
-	<input type="text" class="form-control1" id="id-input" placeholder="Enter ID">
-	<button class="register_candidate" onClick="App.registerCandidate()"> Register Candidate </button>
-	</br>	</br>
-	<button class="register_voter" onClick=App.registerVoter()">Register as Voter</button>
-	</div>
-
-	<div class="third_segment">
-	<h3 class="vote_result">Participate</h3>
-	<button class="result" onClick="App.findNumOfVotes()">Fetch Results</button>
-	<div class="vote-box"></div>
-	</div>
-	
-	<div class="msg"></div>
-	</div>
-
-      
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->

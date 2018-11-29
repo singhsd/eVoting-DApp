@@ -42,6 +42,8 @@ contract Voting {
     mapping (uint => Candidate) candidates;
     mapping (uint => Voter) voters;
     
+    mapping (string => uint) whoVotedWho;
+    
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      *  These functions perform transactions, editing the mappings *
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
