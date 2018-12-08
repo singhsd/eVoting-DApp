@@ -21,14 +21,31 @@ window.App = {
 
     // creates an VotingContract instance that represents default address managed by VotingContract
     VotingContract.deployed().then(function(instance){
-
+    
+      instance.getStartTime().then(function(start){
+        var x=start;
+        window.startTime = x.c[0];
+        instance.getRegPhase().then(function(regPhase){
+            var x=regPhase;
+            window.regTime = x.c[0];
+            instance.getVotePhase().then(function(votePhase){
+                var x=votePhase;
+                window.voteTime = x.c[0];
+                var timeCheck1 = new Date(1000*(window.startTime+window.regTime))
+                var timeCheck2 = new Date(1000*(window.startTime+window.regTime+window.voteTime))
+                var string = "<p>Register candidates until "+timeCheck1.toString()+".</p><p>Vote for candidates after registration ends until "+timeCheck2.toString()+".</p><p>Get results after voting has ended</p><hr/>"
+                $("#myHeading").html(string)
+            });
+        });
+      });
+      
       // calls getNumOfCandidates() function in Smart Contract, 
       // this is not a transaction though, since the function is marked with "view" and
       // truffle contract automatically knows this
       instance.getNumOfCandidates().then(function(numOfCandidates){
 
         // adds candidates to Contract if there aren't any
-        if (numOfCandidates == 0){
+        if (numOfCandidates == 0){/*
           // calls addCandidate() function in Smart Contract and adds candidate with name "Candidate1"
           // the return value "result" is just the transaction, which holds the logs,
           // which is an array of trigger events (1 item in this case - "addedCandidate" event)
@@ -41,6 +58,11 @@ window.App = {
           })
           // the global variable will take the value of this variable
           numOfCandidates = 2 
+        */
+        instance.addCandidate("None Of The Listed","None").then(function(result){ 
+            $("#candidate-box").append(`<div class='form-check'><input class='form-check-input' type='checkbox' value='' id=${result.logs[0].args.candidateID}><label class='form-check-label' for=0>None Of The Listed</label></div>`)
+          })
+        numOfCandidates = 1
         }
         else { // if candidates were already added to the contract we loop through them and display them
           for (var i = 0; i < numOfCandidates; i++ ){
@@ -58,9 +80,45 @@ window.App = {
       console.error("ERROR! " + err.message)
     })
   },
+  //function for registration of candidate.
+  registerCandidate: function() {
+    var nowTime = ((new Date).getTime())/1000
+    if(nowTime > window.startTime + window.regTime){
+        $("#msg").html("<p>Registration Period Ended.</p>")
+        alert("Registration Period ended!")
+      return
+    }
+    var uname = $("#id-input2").val()
+    if (uname == ""){
+      $("#msg").html("<p>Please enter name.</p>")
+      return
+    }
+    $("#msg").html("")
+    VotingContract.deployed().then(function(instance){
+      
+      instance.addCandidate(uname,"None").then(function(result){ 
+            $("#candidate-box").append(`<div class='form-check'><input class='form-check-input' type='checkbox' value='' id=${result.logs[0].args.candidateID}><label class='form-check-label' for=0>${uname}</label></div>`)
+          })
+      
+    }).catch(function(err){ 
+      console.error("ERROR! " + err.message)
+    })
+  },
 
   // Function that is called when user clicks the "vote" button
   vote: function() {
+    var nowTime = ((new Date).getTime())/1000
+    if(nowTime < window.startTime + window.regTime){
+        $("#msg").html("<p>Voting Period Not Started Yet.</p>")
+        alert("Voting Period Not Started Yet");
+      return
+    }
+    if(nowTime > window.startTime + window.regTime + window.voteTime){
+        $("#msg").html("<p>Voting Period Ended.</p>")
+        alert("Voting Period Ended.");
+      return
+    }
+    $("#msg").html("")
     var uid = $("#id-input").val() //getting user inputted id
 
     // Application Logic 
@@ -73,17 +131,24 @@ window.App = {
     // when we call the vote function in Smart Contracts
     if ($("#candidate-box :checkbox:checked").length > 0){ 
       // just takes the first checked box and gets its id
+      if ($("#candidate-box :checkbox:checked").length > 1) {
+          $("#msg").html("<p>Please select only one candidate.</p>")
+          alert("Please select only one candidate.");
+          return
+      }
       var candidateID = $("#candidate-box :checkbox:checked")[0].id
     } 
     else {
       // print message if user didn't vote for candidate
       $("#msg").html("<p>Please vote for a candidate.</p>")
+      alert("Please vote for a candidate.");
       return
     }
     // Actually voting for the Candidate using the Contract and displaying "Voted"
     VotingContract.deployed().then(function(instance){
       instance.vote(uid,parseInt(candidateID)).then(function(result){
         $("#msg").html("<p>Voted</p>")
+        alert("Voted");
       })
     }).catch(function(err){ 
       console.error("ERROR! " + err.message)
@@ -92,6 +157,13 @@ window.App = {
 
   // function called when the "Count Votes" button is clicked
   findNumOfVotes: function() {
+    var nowTime = ((new Date).getTime())/1000
+    if(nowTime < window.startTime + window.regTime + window.voteTime){
+        $("#msg").html("<p>Voting Not Ended Yet.</p>")
+        alert("Voting not ended yet.");
+      return
+    }
+    $("#msg").html("")
     VotingContract.deployed().then(function(instance){
       // this is where we will add the candidate vote Info before replacing whatever is in #vote-box
       var box = $("<section></section>") 
@@ -124,7 +196,7 @@ window.addEventListener("load", function() {
   } else {
     console.warn("No web3 detected. Falling back to http://localhost:9545. You should remove this fallback when you deploy live, as it's inherently insecure. Consider switching to Metamask for deployment. More info here: http://truffleframework.com/tutorials/truffle-and-metamask")
     // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
-    window.web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:9545"))
+    window.web3 = new Web3(new Web3.providers.HttpProvider("http://192.168.0.2:9545"))
   }
   // initializing the App
   window.App.start()

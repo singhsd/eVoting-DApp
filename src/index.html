@@ -16,18 +16,24 @@
       <div class="row">
         <div>
           <h1 class="text-center">Ethereum Voting Dapp</h1>
+          <div id="msg" class="msgBox"></div>
           <hr/>
           <br/>
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-4">
+      
+      <div id="myHeading"></div>
+      <!--div class="row">
+        <div class="col-md-4"-->
+        <div class="col1">
           <p>Register a Candidate</p>
           <div>
             <input type="text" class="form-control2" id="id-input2" placeholder="Enter name">
             <button class="btn btn-primary" onclick="App.registerCandidate()">Register</button>
             </br></br></br>
           </div>
+        </div>
+        <div class="col2">
           <p>Select Candidate to Vote</p>
           <div class="input-group mb-3">
             
@@ -35,14 +41,19 @@
           </div>
           <div id="candidate-box"></div>
           <button class="btn btn-primary" onclick="App.vote()">Vote</button>
-          <div id="msg"></div>
+          
         </div>
+       </div>
+       
+       <div class="col3">
         <div class="col-md-6">
             <button class="btn btn-primary" onclick="App.findNumOfVotes()">Count Votes</button>
+            </br> </br>
             <div id="vote-box"></div>
         </div>
-      </div>
-    </div>
+       </div>
+      <!--/div>
+    </div-->
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

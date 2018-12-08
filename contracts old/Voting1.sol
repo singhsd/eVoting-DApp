@@ -9,16 +9,8 @@
      
         // describes a Voter, which has an id and the ID of the candidate they voted for
         address owner;
-        uint start;
-        uint regPhase;
-        uint votePhase;
-        
-        // function for voting
         function Voting()public {
             owner=msg.sender;
-            start=now;
-            regPhase=5*60;
-            votePhase=5*60;
         }
         modifier onlyOwner {
             require(msg.sender == owner);
@@ -95,31 +87,13 @@
             uint numOfVotes = candidates[candidateID].votes;
             return numOfVotes; 
         }
-        
-        // function to get number of candidates
+     
         function getNumOfCandidates() public view returns(uint) {
             return numCandidates;
         }
-        
-        // function to get number of voters
+     
         function getNumOfVoters() public view returns(uint) {
             return numVoters;
-        }
-        
-        
-        // function to get start time.
-        function getStartTime() public view returns(uint) {
-            return start;
-        }
-        
-        // function to get the length of registration period
-        function getRegPhase() public view returns(uint) {
-            return regPhase;
-        }
-        
-        // function to get the length of voting period.
-        function getVotePhase() public view returns(uint) {
-            return  votePhase;
         }
         // returns candidate information, including its ID, name, and party
         function getCandidate(uint candidateID) public view returns (uint,bytes32, bytes32) {

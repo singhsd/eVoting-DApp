@@ -5,5 +5,27 @@
     margin-top: 20px;
 }
 #msg {
-    border: 2px solid black;
+    border: 0px solid black;
+}
+
+.col1 {
+    position: absolute;
+    width: 33%;
+}
+
+.col2 {
+    position: absolute;
+    margin-left: 33%;
+}
+
+.col3 {
+    position: absolute;
+    margin-left: 67%;
+    width: 100%;
+}
+
+.msgBox {
+    position: absolute;
+    margin-left: 77%;
+    margin-top: -13px;
 }
